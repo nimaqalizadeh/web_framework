@@ -3,9 +3,13 @@ from webob import Request, Response
 class API:
     def __call__(self, environ, start_response):
         request = Request(environ)
-        response = Response()
-        response.text = "Hi"
+        response = self.handle_request(request)
         return response(environ, start_response)
     
+    def handle_request(self, request):
+        user_agent = request.environ.get("HTTP_USER_AGENT", "No User Agent Found")
+        response = Response()
+        response.text = f"Hello, {user_agent}"
+        return response
     
 app = API()
